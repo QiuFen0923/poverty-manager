@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.FinancialMapper">
+
+    <sql id="Base_Column_List">
+        id, title, budget, status, project, target, time, user
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.Financial">
+        select <include refid="Base_Column_List" />
+        from financial
+        <where>
+            <if test="title != null and title != ''"> and title like concat('%', #{title}, '%')</if>
+            <if test="budget != null"> and budget = #{budget}</if>
+            <if test="status != null and status != ''"> and status = #{status}</if>
+            <if test="project != null and project != ''"> and project = #{project}</if>
+            <if test="target != null and target != ''"> and target = #{target}</if>
+            <if test="time != null and time != ''"> and time = #{time}</if>
+            <if test="user != null and user != ''"> and user = #{user}</if>
+        </where>
+        order by time desc
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Financial">
+        select
+        <include refid="Base_Column_List" />
+        from financial
+        where id = #{id}
+    </select>
+
+    <select id="selectPage" resultType="com.example.entity.Financial">
+        select
+        <include refid="Base_Column_List" />
+        from financial
+        <where>
+            <if test="financial.title != null and financial.title != ''"> and title like concat('%', #{financial.title}, '%')</if>
+            <if test="financial.status != null and financial.status != ''"> and status = #{financial.status}</if>
+            <if test="financial.project != null and financial.project != ''"> and project = #{financial.project}</if>
+            <if test="financial.target != null and financial.target != ''"> and target = #{financial.target}</if>
+            <if test="financial.time != null and financial.time != ''"> and time = #{financial.time}</if>
+            <if test="financial.user != null and financial.user != ''"> and user = #{financial.user}</if>
+        </where>
+        order by time desc
+        limit #{start}, #{pageSize}
+    </select>
+
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(*)
+        from financial
+        <where>
+            <if test="title != null and title != ''"> and title like concat('%', #{title}, '%')</if>
+            <if test="status != null and status != ''"> and status = #{status}</if>
+            <if test="project != null and project != ''"> and project = #{project}</if>
+            <if test="target != null and target != ''"> and target = #{target}</if>
+            <if test="time != null and time != ''"> and time = #{time}</if>
+            <if test="user != null and user != ''"> and user = #{user}</if>
+            <!-- 移除 budget 的条件判断 -->
+        </where>
+    </select>
+
+    <delete id="deleteById">
+        delete from financial
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from financial
+        where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Financial" useGeneratedKeys="true" keyProperty="id">
+        insert into financial
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">title,</if>
+            <if test="budget != null">budget,</if>
+            <if test="status != null">status,</if>
+            <if test="project != null">project,</if>
+            <if test="target != null">target,</if>
+            <if test="time != null">time,</if>
+            <if test="user != null">user,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null">#{title},</if>
+            <if test="budget != null">#{budget},</if>
+            <if test="status != null">#{status},</if>
+            <if test="project != null">#{project},</if>
+            <if test="target != null">#{target},</if>
+            <if test="time != null">#{time},</if>
+            <if test="user != null">#{user},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Financial">
+        update financial
+        <set>
+            <if test="title != null">title = #{title},</if>
+            <if test="budget != null">budget = #{budget},</if>
+            <if test="status != null">status = #{status}</if>
+            <if test="project != null">project = #{project}</if>
+            <if test="target != null">target = #{target}</if>
+            <if test="time != null">time = #{time}</if>
+            <if test="user != null">user = #{user}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

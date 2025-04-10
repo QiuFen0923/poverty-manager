@@ -1,0 +1,6 @@
+.finger-hover {
+    cursor: pointer; /* 当鼠标悬停时显示小手图标 */
+}
+.finger-hover:hover {
+    color: #11a983;
+}

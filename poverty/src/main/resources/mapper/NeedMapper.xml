@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.NeedMapper">
+
+    <sql id="Base_Column_List">
+        id, user_id, content, status, time, opinion, evaluate, deal
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.Need">
+        select need.* ,user.username as username
+        from need
+        left join user on need.user_id = user.id
+        <where>
+            <if test="id != null "> and need.id = #{id}</if>
+            <if test="userId != null "> and need.user_id = #{userId}</if>
+            <if test="content != null  and content != ''"> and need.content like concat('%', #{content},'%')</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="time != null  and time != ''"> and time = #{time}</if>
+            <if test="opinion != null  and opinion != ''"> and opinion = #{opinion}</if>
+            <if test="evaluate != null  and evaluate != ''"> and evaluate = #{evaluate}</if>
+            <if test="deal != null  and deal != ''"> and deal = #{deal}</if>
+            <if test="username != null  and username != ''"> and username = #{username}</if>
+        </where>
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Need">
+        select
+        <include refid="Base_Column_List" />
+        from need
+        where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from need
+        where  id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Need" useGeneratedKeys="true">
+        insert into need
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="content != null">content,</if>
+            <if test="status != null">status,</if>
+            <if test="time != null">time,</if>
+            <if test="opinion != null">opinion,</if>
+            <if test="evaluate != null">evaluate,</if>
+            <if test="deal != null">deal,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="content != null">#{content},</if>
+            <if test="status != null">#{status},</if>
+            <if test="time != null">#{time},</if>
+            <if test="opinion != null">#{opinion},</if>
+            <if test="evaluate != null">#{evaluate},</if>
+            <if test="deal != null">#{deal},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Need">
+        update need
+        <set>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="time != null">time = #{time},</if>
+            <if test="opinion != null">opinion = #{opinion},</if>
+            <if test="evaluate != null">evaluate = #{evaluate},</if>
+            <if test="deal != null">deal = #{deal},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

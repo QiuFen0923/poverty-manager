@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.FeedbackMapper">
+
+    <sql id="Base_Column_List">
+        id, user_id, content, deal_content, time, status
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.Feedback">
+        select feedback.* ,user.username as username
+        from feedback
+        left join user on feedback.user_id = user.id
+        <where>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="dealContent != null  and dealContent != ''"> and deal_content = #{dealContent}</if>
+            <if test="time != null  and time != ''"> and time = #{time}</if>
+            <if test="status != null  and status != ''"> and feedback.status = #{status}</if>
+            <if test="username != null"> and username= #{username}</if>
+        </where>
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Feedback">
+        select
+        <include refid="Base_Column_List" />
+        from feedback
+        where id = #{id}
+    </select>
+
+    <select id="selectByUsername" resultType="com.example.entity.Feedback">
+        select feedback.* ,user.username as username
+            from feedback
+        left join user on feedback.user_id = user.id
+        <where>
+            <if test="username != null"> and username= #{username}</if>
+        </where>
+
+    </select>
+
+    <delete id="deleteById">
+        delete from feedback
+        where  id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Feedback" useGeneratedKeys="true">
+        insert into feedback
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="content != null">content,</if>
+            <if test="dealContent != null">deal_content,</if>
+            <if test="time != null">time,</if>
+            <if test="status != null">status,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="content != null">#{content},</if>
+            <if test="dealContent != null">#{dealContent},</if>
+            <if test="time != null">#{time},</if>
+            <if test="status != null">#{status},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Feedback">
+        update feedback
+        <set>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="dealContent != null">deal_content = #{dealContent},</if>
+            <if test="time != null">time = #{time},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,11 @@
+<select id="selectProvinceStats" resultType="java.util.Map">
+    SELECT province, COUNT(*) as count 
+    FROM message 
+    GROUP BY province
+</select> 
+
+<select id="getProvinceStats" resultType="java.util.Map">
+    SELECT province, COUNT(*) as count 
+    FROM message 
+    GROUP BY province
+</select> 

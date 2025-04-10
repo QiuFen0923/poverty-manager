@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ViewMapMapper">
+
+    <select id="getProvinceStats" resultType="java.util.Map">
+        SELECT province, COUNT(*) as count
+        FROM message
+        GROUP BY province
+    </select>
+
+    <select id="getAgeStats" resultType="java.util.Map">
+        SELECT
+        CASE
+        WHEN age &lt; 20 THEN '20岁以下'
+        WHEN age BETWEEN 20 AND 29 THEN '20-29岁'
+        WHEN age BETWEEN 30 AND 39 THEN '30-39岁'
+        WHEN age BETWEEN 40 AND 49 THEN '40-49岁'
+        ELSE '50岁以上'
+        END as age_group,
+        COUNT(*) as count
+        FROM message
+        GROUP BY age_group
+    </select>
+
+    <select id="getEthnicStats" resultType="java.util.Map">
+        SELECT ethnic, COUNT(*) as count
+        FROM message
+        GROUP BY ethnic
+    </select>
+
+    <select id="getPoorCount" resultType="java.util.Map">
+        SELECT
+            COUNT(CASE WHEN poorstate = '脱贫' THEN 1 END) as poorCount,
+            COUNT(CASE WHEN poorstate = '待扶贫' THEN 1 END) as unPoorCount
+        FROM message
+    </select>
+
+</mapper>

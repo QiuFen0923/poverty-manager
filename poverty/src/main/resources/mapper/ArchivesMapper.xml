@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ArchivesMapper">
+
+    <sql id="Base_Column_List">
+        id, user_id, age, price, address, debt, education, skill, work, life, house, harm, area, disable, else_description, status
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.Archives">
+        select archives.* ,user.name as userName
+
+        from archives
+        left join user on archives.user_id = user.id
+        <where>
+            <if test="userId != null "> and archives.user_id = #{userId}</if>
+            <if test="age != null  and age != ''"> and archives.age = #{age}</if>
+            <if test="price != null  and price != ''"> and archives.price = #{price}</if>
+            <if test="address != null  and address != ''"> and archives.address = #{address}</if>
+            <if test="debt != null  and debt != ''"> and archives.debt = #{debt}</if>
+            <if test="education != null  and education != ''"> and archives.education = #{education}</if>
+            <if test="skill != null  and skill != ''"> and archives.skill = #{skill}</if>
+            <if test="work != null  and work != ''"> and archives.work = #{work}</if>
+            <if test="life != null  and life != ''"> and life = #{life}</if>
+            <if test="harm != null  and harm != ''"> and harm = #{harm}</if>
+            <if test="area != null  and area != ''"> and area = #{area}</if>
+            <if test="disable != null  and disable != ''"> and disable = #{disable}</if>
+            <if test="elseDescription != null  and elseDescription != ''"> and else_description = #{elseDescription}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="userName != null  and userName != ''"> and user.name = #{userName}</if>
+        </where>
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Archives">
+        select
+        <include refid="Base_Column_List" />
+        from archives
+        where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from archives
+        where  id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Archives" useGeneratedKeys="true">
+        insert into archives
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="age != null">age,</if>
+            <if test="price != null">price,</if>
+            <if test="address != null">address,</if>
+            <if test="debt != null">debt,</if>
+            <if test="education != null">education,</if>
+            <if test="skill != null">skill,</if>
+            <if test="work != null">work,</if>
+            <if test="life != null">life,</if>
+            <if test="house != null">house,</if>
+            <if test="harm != null">harm,</if>
+            <if test="area != null">area,</if>
+            <if test="disable != null">disable,</if>
+            <if test="elseDescription != null">else_description,</if>
+            <if test="status != null">status,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="age != null">#{age},</if>
+            <if test="price != null">#{price},</if>
+            <if test="address != null">#{address},</if>
+            <if test="debt != null">#{debt},</if>
+            <if test="education != null">#{education},</if>
+            <if test="skill != null">#{skill},</if>
+            <if test="work != null">#{work},</if>
+            <if test="life != null">#{life},</if>
+            <if test="house != null">#{house},</if>
+            <if test="harm != null">#{harm},</if>
+            <if test="area != null">#{area},</if>
+            <if test="disable != null">#{disable},</if>
+            <if test="elseDescription != null">#{elseDescription},</if>
+            <if test="status != null">#{status},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Archives">
+        update archives
+        <set>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="debt != null">debt = #{debt},</if>
+            <if test="education != null">education = #{education},</if>
+            <if test="skill != null">skill = #{skill},</if>
+            <if test="work != null">work = #{work},</if>
+            <if test="life != null">life = #{life},</if>
+            <if test="hose != null">hose = #{hose},</if>
+            <if test="harm != null">harm = #{harm},</if>
+            <if test="area != null">area = #{area},</if>
+            <if test="disable != null">disable = #{disable},</if>
+            <if test="elseDescription != null">else_description = #{elseDescription},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="house != null">house = #{house},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

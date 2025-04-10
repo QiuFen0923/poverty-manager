@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.MessageMapper">
+
+    <sql id="Base_Column_List">
+        id, applyname, sfz, poorstate, poorway, homemember, ethnic, poorclass, poorreason, time, user, province,age,currentstate, suggestion
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.Message">
+        select <include refid="Base_Column_List" />
+        from message
+        <where>
+            <if test="applyname != null and applyname != ''"> and applyname like concat('%', #{applyname}, '%')</if>
+            <if test="sfz != null"> and sfz = #{sfz}</if>
+            <if test="poorstate != null and poorstate != ''"> and poorstate = #{poorstate}</if>
+            <if test="poorway != null and poorway != ''"> and poorway = #{poorway}</if>
+            <if test="homemember != null"> and homemember = #{homemember}</if>
+            <if test="ethnic != null and ethnic != ''"> and ethnic = #{ethnic}</if>
+            <if test="poorclass != null and poorclass != ''"> and poorclass = #{poorclass}</if>
+            <if test="poorreason != null and poorreason != ''"> and poorreason = #{poorreason}</if>
+            <if test="time != null and time != ''"> and time = #{time}</if>
+            <if test="user != null and user != ''"> and user = #{user}</if>
+            <if test="province != null and province != ''"> and province = #{province}</if>
+            <if test="age != null and age != ''"> and age = #{age}</if>
+            <if test="currentstate != null and currentstate != ''"> and currentstate = #{currentstate}</if>
+        </where>
+        order by time desc
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Message">
+        select
+        <include refid="Base_Column_List" />
+        from message
+        where id = #{id}
+    </select>
+
+
+    <select id="selectPage" resultType="com.example.entity.Message">
+        select
+        <include refid="Base_Column_List" />
+        from message
+        <where>
+            <if test="message.applyname != null and message.applyname != ''"> and applyname like concat('%', #{message.applyname}, '%')</if>
+            <if test="message.sfz != null and message.sfz != ''"> and sfz like concat('%', #{message.sfz}, '%')</if>
+            <if test="message.poorstate != null and message.poorstate != ''"> and poorstate = #{message.poorstate}</if>
+            <if test="message.poorway != null and message.poorway != ''"> and poorway = #{message.poorway}</if>
+            <if test="message.homemember != null"> and homemember = #{message.homemember}</if>
+            <if test="message.ethnic != null and message.ethnic != ''"> and ethnic = #{message.ethnic}</if>
+            <if test="message.poorclass != null and message.poorclass != ''"> and poorclass = #{message.poorclass}</if>
+            <if test="message.poorreason != null and message.poorreason != ''"> and poorreason = #{message.poorreason}</if>
+            <if test="message.time != null and message.time != ''"> and time = #{message.time}</if>
+            <if test="message.user != null and message.user != ''"> and user = #{message.user}</if>
+            <if test="message.province != null and message.province != ''"> and province = #{message.province}</if>
+            <if test="message.age != null and message.age != ''"> and age = #{message.age}</if>
+            <if test="message.currentstate != null and message.currentstate != ''"> and currentstate = #{message.currentstate}</if>
+        </where>
+        order by time desc
+        limit #{start}, #{pageSize}
+    </select>
+
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(*)
+        from message
+        <where>
+            <if test="applyname != null and applyname != ''"> and applyname like concat('%', #{applyname}, '%')</if>
+            <if test="sfz != null"> and sfz = #{sfz}</if>
+            <if test="poorstate != null and poorstate != ''"> and poorstate = #{poorstate}</if>
+            <if test="poorway != null and poorway != ''"> and poorway = #{poorway}</if>
+            <if test="homemember != null"> and homemember = #{homemember}</if>
+            <if test="ethnic != null and ethnic != ''"> and ethnic = #{ethnic}</if>
+            <if test="poorclass != null and poorclass != ''"> and poorclass = #{poorclass}</if>
+            <if test="poorreason != null and poorreason != ''"> and poorreason = #{poorreason}</if>
+            <if test="time != null and time != ''"> and time = #{time}</if>
+            <if test="user != null and user != ''"> and user = #{user}</if>
+            <if test="province != null and province != ''"> and province = #{province}</if>
+            <if test="age != null and age != ''"> and age = #{age}</if>
+            <if test="currentstate != null and currentstate != ''"> and currentstate = #{currentstate}</if>
+        </where>
+    </select>
+
+    <delete id="deleteById">
+        delete from message
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from message
+        where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Message" useGeneratedKeys="true" keyProperty="id">
+        insert into message
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="applyname != null">applyname,</if>
+            <if test="sfz != null">sfz,</if>
+            <if test="poorstate != null">poorstate,</if>
+            <if test="poorway != null">poorway,</if>
+            <if test="homemember != null">homemember,</if>
+            <if test="ethnic != null">ethnic,</if>
+            <if test="poorclass != null">poorclass,</if>
+            <if test="poorreason != null">poorreason,</if>
+            <if test="time != null">time,</if>
+            <if test="user != null">user,</if>
+            <if test="province != null">province,</if>
+            <if test="age != null">age,</if>
+            <if test="currentstate != null">currentstate,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="applyname != null">#{applyname},</if>
+            <if test="sfz != null">#{sfz},</if>
+            <if test="poorstate != null">#{poorstate},</if>
+            <if test="poorway != null">#{poorway},</if>
+            <if test="homemember != null">#{homemember},</if>
+            <if test="ethnic != null">#{ethnic},</if>
+            <if test="poorclass != null">#{poorclass},</if>
+            <if test="poorreason != null">#{poorreason},</if>
+            <if test="time != null">#{time},</if>
+            <if test="user != null">#{user},</if>
+            <if test="province != null">#{province},</if>
+            <if test="age != null">#{age},</if>
+            <if test="currentstate != null">#{currentstate},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Message">
+        update message
+        <set>
+            <if test="applyname != null">applyname = #{applyname},</if>
+            <if test="sfz != null">sfz = #{sfz},</if>
+            <if test="poorstate != null">poorstate = #{poorstate},</if>
+            <if test="poorway != null">poorway = #{poorway},</if>
+            <if test="homemember != null">homemember = #{homemember},</if>
+            <if test="ethnic != null">ethnic = #{ethnic},</if>
+            <if test="poorclass != null">poorclass = #{poorclass},</if>
+            <if test="poorreason != null">poorreason = #{poorreason},</if>
+            <if test="time != null">time = #{time},</if>
+            <if test="user != null">user = #{user},</if>
+            <if test="province != null">province = #{province},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="currentstate != null">currentstate = #{currentstate},</if>
+            <if test="suggestion != null">suggestion = #{suggestion},</if> <!-- 添加这一行 -->
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>
